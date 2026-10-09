@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Dulce Encanto de Jalisco</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--rosa:#F87A92;--rosa-claro:#FDD5CE;--fondo:#FFF6E9;--cafe:#703E24;--tarjeta:#FFEED8;--boton:#F86A8C;--pie:#8B4A2B}
+body{font-family:'Lato',sans-serif;background:var(--fondo);color:var(--cafe)}
+h1,h2{font-family:'Playfair Display',serif}
+header{background:linear-gradient(180deg,var(--rosa),var(--rosa-claro));padding:1rem 2rem 2.5rem;position:sticky;top:0;z-index:10}
+.navegacion{display:flex;justify-content:flex-end;gap:0.5rem;flex-wrap:wrap}
+.logo{position:absolute;left:2rem;top:1rem;font-weight:800;color:white;font-size:1.4rem}
+.nav-enlace{padding:0.5rem 1rem;border-radius:20px;cursor:pointer;font-weight:600;border:2px solid transparent}
+.nav-enlace.activo{background:white;color:var(--boton)}
+.nav-enlace:hover{background:rgba(255,255,255,0.5)}
+.encabezado{text-align:center;margin-top:1.5rem}.encabezado h1{font-size:2.6rem}
+.seccion{display:none;padding:2rem;max-width:1100px;margin:auto;animation:fade .4s ease}
+.seccion.visible{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.grid-inicio{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+.grid-inicio img{width:100%;height:220px;object-fit:cover;border-radius:16px;box-shadow:0 6px 15px rgba(0,0,0,0.1)}
+.grid-inicio .card{position:relative}
+.grid-inicio .card span{position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,0.9);padding:4px 10px;border-radius:20px;font-size:0.85rem;font-weight:700}
+.grid-postres{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;margin-top:1.5rem}
+.mini-card{background:var(--tarjeta);border-radius:16px;padding:1rem;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,0.05)}
+.mini-card img{width:100%;height:120px;object-fit:cover;border-radius:12px;margin-bottom:0.6rem}
+.mini-card h3{font-size:1rem}
+.precio{font-weight:800;font-size:1.2rem;color:var(--cafe);margin-top:4px}
+.lista-20{margin-top:2.5rem;background:white;border-radius:20px;padding:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
+.lista-20 h3{text-align:center;margin-bottom:1rem;font-size:1.5rem}
+.tabla-postres{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
+.tabla-postres div{background:var(--tarjeta);padding:0.7rem 1rem;border-radius:12px;display:flex;justify-content:space-between;font-weight:600}
+@media(max-width:700px){.tabla-postres{grid-template-columns:1fr}}
+.nosotros-box{background:white;border-radius:20px;padding:2rem;line-height:1.8;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
+.pedido-form{background:white;border-radius:20px;padding:1.5rem;box-shadow:0 4px 15px rgba(0,0,0,0.06)}
+.lista-postres{display:flex;flex-direction:column;gap:0.8rem;margin:1rem 0}
+.item-pedido{display:flex;justify-content:space-between;align-items:center;background:var(--tarjeta);padding:0.8rem 1rem;border-radius:12px}
+.item-pedido label{flex:1;cursor:pointer}
+.botones{display:flex;gap:1rem;margin-top:1rem}
+.btn{flex:1;padding:0.9rem;border:none;border-radius:25px;font-weight:700;cursor:pointer;font-size:1rem}
+.btn-cancel{background:#eee;color:var(--cafe)}
+.btn-add{background:var(--boton);color:white}
+.btn-send{display:none;background:#2E7D32;color:white;margin-top:1rem;width:100%;padding:1rem;border-radius:25px;border:none;font-weight:800;font-size:1.1rem;cursor:pointer}
+#resumen{margin-top:1rem;background:var(--fondo);padding:1rem;border-radius:12px;display:none}
+.contact-box{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.contact-card{background:white;padding:1.5rem;border-radius:16px;box-shadow:0 3px 10px rgba(0,0,0,0.05)}
+@media(max-width:700px){.grid-inicio{grid-template-columns:1fr 1fr}.contact-box{grid-template-columns:1fr}.navegacion{justify-content:center;margin-top:2.5rem}}
+.buscador-box{background:#FFF0F3;border:2px dashed var(--rosa);padding:1rem;border-radius:16px;margin-top:1.5rem}
+.buscador-box input{width:100%;padding:0.8rem;border-radius:20px;border:1.5px solid #E8C8B4;margin-top:0.5rem}
+.resultado-custom{background:white;padding:0.8rem 1rem;border-radius:12px;margin-top:0.8rem;display:none;justify-content:space-between;align-items:center;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">maluce</div>
+<nav class="navegacion">
+<a data-target="inicio" class="nav-enlace activo">Inicio</a>
+<a data-target="postres" class="nav-enlace">Nuestros Postres</a>
+<a data-target="nosotros" class="nav-enlace">Nosotros</a>
+<a data-target="pedido" class="nav-enlace">Pedido</a>
+<a data-target="contacto" class="nav-enlace">Contacto</a>
+</nav>
+<div class="encabezado"><h1>El Dulce Encanto de Jalisco</h1><p>Postres que Endulzan tu Vida</p></div>
+</header>
+
+<section id="inicio" class="seccion visible">
+<h2 style="text-align:center;font-size:2.2rem;margin-bottom:0.5rem">¡Dulzura que enamora!</h2>
+<p style="text-align:center">6 delicias artesanales de nuestra vitrina</p>
+<div class="grid-inicio">
+<div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfUk5lndYM_1bE74WyyIlB8d0EdGEO7wZQ2Lwi3A6uyA&s=10" alt="Entremet"><span>Entremet Frambuesa</span></div>
+<div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj3RkMRGBYQfF2yYs571pvpZYlPp22jVmvkKw8uNkaeA&s=10" alt="Jericalla"><span>Jericalla</span></div>
+<div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH5PKgL50va9jOqN4KYuHqhKdh8PNI8UjaD3tTygz9Tw&s=10" alt="Churros"><span>Churros</span></div>
+<div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaofIy2ColCu-xBH-Ud5tm6xcLqQOLPEgPWLeWoHma7w&s=10" alt="Fresas"><span>Fresas con Crema</span></div>
+<div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjKWjsmCm2-DIfQx09ww6Je9M_PhtPRd4JhlTFpSkYmQ&s=10" alt="Milhojas de vainilla Tahití y praliné de nuez pecana"><span>Milhojas de vainilla Tahití y praliné de nuez pecana</span></div>
+<div class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfYFgP34e26PIXybLOIyuwhP3fOI_rOC-K6aeWDdG0UQ&s=10" alt="Panna cotta de cardamomo con gelatina de vino tinto y frutos rojos:"><span>Panna cotta de cardamomo con gelatina de vino tinto y frutos rojos:</span></div>
+</div>
+</section>
+
+<section id="postres" class="seccion">
+<h2 style="text-align:center;font-size:2.2rem">Nuestros Postres - Alta Repostería</h2>
+<div class="grid-postres">
+<div class="mini-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvcbsEpohHRx0RCHWZWfJ3pnPPLVZQNp7cVTUu6w0KTw&s=10"><h3>Domo Chocolate Oro</h3><p class="precio">$85</p></div>
+<div class="mini-card"><img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400"><h3>cupcakes de fresa</h3><p class="precio">$70</p></div>
+<div class="mini-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTShmXyWVo1gs434gggOpYjvlqTe1NAw6NtGJBDgsTl3g&s=10"><h3>Éclair Pistache</h3><p class="precio">$45</p></div>
+<div class="mini-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRoPKbB4lK-Mp_1APXaF0Yy9F9uqvHDLN2De3RiKeOjg&s=10"><h3>Tartaleta Limón</h3><p class="precio">$65</p></div>
+<div class="mini-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu59IdpyP-4CeywKfNj1OwkQ6-hdGNXGx0YOJS1-VeE3CEfgWvBcCg9o9-&s=10"><h3>Lingote Frutos Rojos</h3><p class="precio">$80</p></div>
+<div class="mini-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH4e43lt_-RQ8igeODbDUK1UV_4c6bBV2akUQZf2Fgtw&s=10"><h3>Cheesecake Cajeta</h3><p class="precio">$75</p></div>
+<div class="mini-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzMr4FmJqtyvKtv1GvmMx27R-pVlqwMXE2_XAmg8cRQQ&s=10"><h3>Macarons Surtidos</h3><p class="precio">$90</p></div>
+<div class="mini-card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIUA3RQOCurbcDh7o2rFTQe4-hgQj9lzpM9NIlrgTKrQ&s=10"><h3>Selva Negra Mini</h3><p class="precio">$78</p></div>
+</div>
+<div class="lista-20">
+<h3>Carta Completa - 20 Delicias Más</h3>
+<div class="tabla-postres" id="tabla20"></div>
+</div>
+</section>
+
+<section id="nosotros" class="seccion">
+<h2 style="text-align:center;font-size:2.2rem;margin-bottom:1.5rem">Nosotros</h2>
+<div class="nosotros-box">
+<h3 style="margin-bottom:1rem">Maluce — El Dulce Encanto de Jalisco</h3>
+<p>Nacimos en 2010 en Zapotiltic, Jalisco, con la misión de mantener vivas las recetas dulces de nuestra tierra pero con técnicas de alta repostería francesa.</p><br>
+<p><b>¿Qué nos hace diferentes?</b><br>• Ingredientes 100% naturales de la región<br>• Preparación artesanal diaria<br>• Glaseados espejo, entremets, choux y petit gâteaux<br>• Recetas familiares de más de 3 generaciones<br>• Oro comestible y decoración fina en cada pieza</p><br>
+<p>De Ciudad Guzmán para todo Jalisco. Cada postre es una pequeña obra de arte hecha con amor.</p>
+</div>
+</section>
+
+<section id="pedido" class="seccion">
+<h2 style="text-align:center;font-size:2.2rem;margin-bottom:1rem">Haz tu Pedido</h2>
+<div class="pedido-form">
+<p>Selecciona tus postres:</p>
+<div class="lista-postres" id="listaPostres">
+<div class="item-pedido"><label><input type="checkbox" value="45" data-nombre="Jericalla"> Jericalla — $45</label></div>
+<div class="item-pedido"><label><input type="checkbox" value="55" data-nombre="Churros con Chocolate"> Churros con Chocolate — $55</label></div>
+<div class="item-pedido"><label><input type="checkbox" value="40" data-nombre="Arroz con Leche"> Arroz con Leche — $40</label></div>
+<div class="item-pedido"><label><input type="checkbox" value="70" data-nombre="Éclair Pistache"> Éclair Pistache — $70</label></div>
+<div class="item-pedido"><label><input type="checkbox" value="85" data-nombre="Domo Chocolate Oro"> Domo Chocolate Oro — $85</label></div>
+<div class="item-pedido"><label><input type="checkbox" value="65" data-nombre="Tartaleta Limón"> Tartaleta Limón — $65</label></div>
+</div>
+<div class="buscador-box">
+<b>¿No está en la lista? Escríbelo aquí:</b>
+<input type="text" id="inputBuscador" placeholder="Ej: Pay de Guayaba, Pastel de Zanahoria..." onkeyup="buscarPostre()">
+<div id="resultadoCustom" class="resultado-custom">
+<span id="textoCustom"></span>
+<button class="btn btn-add" style="padding:0.4rem 1rem;flex:none" onclick="agregarCustom()">Agregar</button>
+</div>
+</div>
+<input type="text" id="nombreCliente" placeholder="Tu nombre" style="width:100%;padding:0.9rem;border:1.5px solid #E8C8B4;border-radius:25px;margin-top:1rem">
+<input type="tel" id="telCliente" placeholder="Teléfono" style="width:100%;padding:0.9rem;border:1.5px solid #E8C8B4;border-radius:25px;margin-top:0.8rem">
+<div id="resumen"></div>
+<div class="botones">
+<button class="btn btn-cancel" onclick="cancelarPedido()">Cancelar</button>
+<button class="btn btn-add" onclick="agregarPedido()">Agregar</button>
+</div>
+<button id="btnEnviar" class="btn-send" onclick="enviarPedido()">✓ ENVIAR PEDIDO POR WHATSAPP</button>
+</div>
+</section>
+
+<section id="contacto" class="seccion">
+<h2 style="text-align:center;font-size:2.2rem;margin-bottom:1.5rem">Contáctanos</h2>
+<div class="contact-box">
+<div class="contact-card"><h3>Visítanos</h3><p>Calle Morelos #78, Centro<br>Ciudad Guzmán, Jalisco<br>Zapotiltic, Jal.</p><br><h3>Horarios</h3><p>Lunes a Sábado<br>10:00 AM - 8:00 PM<br>Domingo: 11:00 AM - 6:00 PM</p></div>
+<div class="contact-card"><h3>Contacto Directo</h3><p><b>WhatsApp:</b> 341 134 3358<br><b>Tel:</b> 341 134 3358<br><b>Email:</b> hola@maluce.com<br><b>Instagram:</b> @maluce.postres<br><b>Facebook:</b> Maluce Repostería</p><br><h3>Entregas</h3><p>Entrega a domicilio en Ciudad Guzmán y Zapotiltic<br>Pedidos con 24h de anticipación</p>
+<a href="https://wa.me/523411343358" target="_blank" style="display:block;margin-top:1rem;background:var(--boton);color:white;text-align:center;padding:0.9rem;border-radius:25px;text-decoration:none;font-weight:700">Chatear por WhatsApp - 3411343358</a>
+</div>
+</div>
+</section>
+
+<script>
+const postresExtra = [
+ {n:"Pay de Guayaba", p:60}, {n:"Pastel de Zanahoria", p:75}, {n:"Carlota de Limón", p:55},
+ {n:"Flan Napolitano", p:50}, {n:"Gelatina Artística", p:45}, {n:"Tiramisú", p:80},
+ {n:"Brazo Gitano", p:70}, {n:"Besitos de Nuez", p:40}, {n:"Capirotada", p:48},
+ {n:"Buñuelos con Piloncillo", p:35}, {n:"Pastel de Elote", p:58}, {n:"Chocoflan", p:65},
+ {n:"Mousse de Mango", p:68}, {n:"Panqué de Naranja", p:52}, {n:"Roles de Canela", p:42},
+ {n:"Empanadas de Cajeta", p:38}, {n:"Trufas de Chocolate", p:62}, {n:"Pavlova de Frutos", p:82},
+ {n:"Tres Leches Clásico", p:60}, {n:"Volcán de Chocolate", p:78}
+];
+const tabla20 = document.getElementById('tabla20');
+postresExtra.forEach(item=>{
+ const div=document.createElement('div');
+ div.innerHTML=`<span>${item.n}</span><span>$${item.p}</span>`;
+ tabla20.appendChild(div);
+});
+document.querySelectorAll('.nav-enlace').forEach(link=>{
+ link.addEventListener('click',()=>{
+  document.querySelectorAll('.nav-enlace').forEach(l=>l.classList.remove('activo'));
+  link.classList.add('activo');
+  document.querySelectorAll('.seccion').forEach(s=>s.classList.remove('visible'));
+  document.getElementById(link.dataset.target).classList.add('visible');
+  window.scrollTo({top:0,behavior:'smooth'});
+ });
+});
+let pedido = [];
+let customActual = null;
+function buscarPostre(){
+ const val = document.getElementById('inputBuscador').value.toLowerCase().trim();
+ const resDiv = document.getElementById('resultadoCustom');
+ if(val.length < 2){ resDiv.style.display='none'; return; }
+ const encontrado = postresExtra.find(x => x.n.toLowerCase().includes(val));
+ if(encontrado){
+  customActual = encontrado;
+  document.getElementById('textoCustom').innerHTML = `<b>${encontrado.n}</b> — $${encontrado.p}`;
+  resDiv.style.display='flex';
+ } else {
+  customActual = {n: document.getElementById('inputBuscador').value, p: 60};
+  document.getElementById('textoCustom').innerHTML = `<b>${customActual.n}</b> — $${customActual.p} (precio base)`;
+  resDiv.style.display='flex';
+ }
+}
+function agregarCustom(){
+ if(customActual){
+  pedido.push(customActual);
+  alert(`${customActual.n} agregado`);
+  document.getElementById('inputBuscador').value='';
+  document.getElementById('resultadoCustom').style.display='none';
+  actualizarResumen();
+ }
+}
+function cancelarPedido(){
+ document.querySelectorAll('#listaPostres input').forEach(i=>i.checked=false);
+ pedido = [];
+ document.getElementById('nombreCliente').value='';
+ document.getElementById('telCliente').value='';
+ document.getElementById('resumen').style.display='none';
+ document.getElementById('btnEnviar').style.display='none';
+ document.getElementById('resultadoCustom').style.display='none';
+ document.getElementById('inputBuscador').value='';
+}
+function agregarPedido(){
+ const checks = document.querySelectorAll('#listaPostres input:checked');
+ checks.forEach(c=>{ pedido.push({n:c.dataset.nombre, p:parseInt(c.value)}) });
+ if(pedido.length===0){alert('Selecciona al menos un postre');return;}
+ actualizarResumen();
+}
+function actualizarResumen(){
+ let total=0; let texto='<b>Tu selección:</b><br>';
+ pedido.forEach(c=>{ total+=c.p; texto+=`• ${c.n} - $${c.p}<br>` });
+ texto+=`<br><b>Total: $${total}</b>`;
+ const res=document.getElementById('resumen');
+ res.innerHTML=texto; res.style.display='block';
+ document.getElementById('btnEnviar').style.display='block';
+}
+function enviarPedido(){
+ const nombre=document.getElementById('nombreCliente').value || 'Cliente';
+ const tel=document.getElementById('telCliente').value || '';
+ let total=0; let lista='';
+ pedido.forEach(c=>{ total+=c.p; lista+=`${c.n} ($${c.p}), ` });
+ const mensaje=`Hola Maluce! Soy ${nombre} %0AQuiero pedir: ${lista} %0ATotal: $${total} %0AMi tel: ${tel}`;
+ window.open(`https://wa.me/523411343358?text=${mensaje}`,'_blank');
+}
+</script>
+</body>
+</html>

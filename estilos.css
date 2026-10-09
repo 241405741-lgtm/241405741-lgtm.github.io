@@ -1,0 +1,30 @@
+/* === GENERALES === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background-color: #fff8f0;
+    color: #4a2c2a;
+    line-height: 1.7;
+}
+
+/* === ENCABEZADO === */
+header {
+    background: linear-gradient(135deg, #b71c66, #e91e63);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.contenedor-encabezado {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom:
